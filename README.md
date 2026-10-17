@@ -9,15 +9,15 @@ actuator and sensor shifts.
 Results are in [REPORT.md](REPORT.md); the tuning history, including the failures, is in [docs/dev_log.md](docs/dev_log.md);
 every deviation from the spec is in [DECISIONS.md](DECISIONS.md).
 
-## Interview demo
+## Offline results explorer
 
 ```bash
 source .venv/bin/activate
-python -m roborobust showcase
+python -m roborobust showcase          # writes demo/showcase.html (generated locally; the demo/ folder is not committed)
 open demo/showcase.html
 ```
 
-The **[offline evidence explorer](demo/showcase.html)** includes condition/seed comparisons, synchronized paired recordings, a scrubber, and recorded sensor rays. It runs without a server or network and rebuilds from existing results without evaluating the test set again. See **[INTERVIEW.md](INTERVIEW.md)** for the pitch, technical questions, failure investigation, and resume wording.
+A single self-contained HTML file (no server or network): condition and seed comparisons, synchronized paired recordings, a scrubber, and recorded sensor rays. It is rebuilt from the existing results without evaluating the test set again; use [REPORT.md](REPORT.md) for statistical inference.
 
 ## Setup (macOS, Apple silicon, Python 3.11, CPU only)
 
@@ -149,10 +149,6 @@ Pre-rendered versions of this example are in `reports/weekend/replays/`.
 * **Gymnasium** is the environment API (`RoboRobustEnv` subclasses `gymnasium.Env`) because Stable-Baselines3's PPO requires it and both libraries ship checkers that the tests run. It is not needed for the physics (that is plain MuJoCo) and you could train with a hand-written loop, at the cost of SB3 and the standard checks.
 * **`verifier.py`** is a state-based success/failure checker that is kept independent of the reward, not an LLM-style "RL with verifiable rewards" framework. Nothing in this project involves a language model, so such environment libraries are not needed.
 
-## Demo
-
-[DEMO.md](DEMO.md) is a three-minute beat sheet with honest talking points; `python scripts/make_demo_assets.py` builds the pictures and GIFs it uses (into `demo/`) from saved trajectories. The recording itself is yours to make.
-
 ## What you need to be able to explain (spec section 14)
 
 The code does not make you an expert on its own. Where to look for each point, so you can verify instead of trust:
@@ -188,5 +184,4 @@ data/scenarios/  frozen manifests + manifest_hashes.json
 tests/           physics, sensors, verifier, rewards, env contract, scenarios, experiment integrity, statistics
 scripts/         dev sweeps (auditable tuning), main training launcher, dev-log generator
 docs/            spec.md (the task spec), dev_log.md (tuning history and failures), raw dev-sweep results (*.jsonl)
-demo/            demo pictures/GIFs built from saved trajectories (see DEMO.md)
 ```

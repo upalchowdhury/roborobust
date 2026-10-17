@@ -17,7 +17,8 @@ results/validation/
 # Kept on purpose: runs/<final>/final.zip + meta.json + progress.csv, results/<final>/ (raw episodes + trajectories),
 # reports/, data/scenarios/ (frozen manifests), requirements.lock
 
-
-# personal files
-DEMO.MD
-INTERVIEW.MD
+# Local-only material: kept on disk, never uploaded to GitHub
+/DEMO.md
+/INTERVIEW.md
+/demo/
+/scripts/make_demo_assets.py

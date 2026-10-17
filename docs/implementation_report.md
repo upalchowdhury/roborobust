@@ -36,5 +36,5 @@ No detectable benefit of domain randomization on the primary endpoint (combined 
 ## Remaining limitations and not done
 
 Simulation only; privileged goal/velocity observations; feedforward policy; uncalibrated stress levels; one combined intervention; five training seeds; coarse 3-value gamma sweep on four dev seeds.
-Not done: motor-only/noise-only ablations (configs provided; they need a freshly generated held-out set), friction shifts, the three-obstacle family, validation-selected checkpoints, the demo video (a script and assets are in `DEMO.md` / `demo/`),
-recording a git commit with the results (the repository's first commit was made by its owner after all training and test evaluation; later edits to reporting/replay code and the demo/ablation additions are not in it), and a visual confirmation of the interactive viewer window (it launched and exited cleanly under `mjpython`).
+Not done: motor-only/noise-only ablations (configs provided; they need a freshly generated held-out set), friction shifts, the three-obstacle family, validation-selected checkpoints, the demo video (the 3-minute recording is a human task),
+recording a git commit with the results (the repository's first commit was made by its owner after all training and test evaluation; later edits to reporting/replay code and the ablation configs are not in it), and a visual confirmation of the interactive viewer window (it launched and exited cleanly under `mjpython`).

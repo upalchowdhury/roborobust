@@ -70,13 +70,7 @@ python scripts/publish_report.py weekend     # copies reports/weekend/REPORT.md 
 `comparison.png`, `learning_curves.png`, `failure_examples.png`, `paired_examples.png`, `failure_taxonomy.csv`, `episode_tags.csv`,
 `paired_bootstrap.csv`, `robustness_gap_did.csv`. Evaluation is deterministic: re-running it reproduces identical episode outcomes.
 
-## 4b. Demo assets
-
-```bash
-python scripts/make_demo_assets.py      # -> demo/ (built only from saved trajectories and reports; nothing is re-run)
-```
-
-## 4c. Follow-up experiment (not run; needs a fresh held-out set)
+## 4b. Follow-up experiment (not run; needs a fresh held-out set)
 
 `configs/motor_only.yaml` and `configs/noise_only.yaml` are the spec's stretch ablations (identical to `randomized.yaml` except one randomized factor).
 They are provided but **were not trained or evaluated**: because the primary result was null, a component-attribution experiment would be motivated by the test results, so the existing test split
