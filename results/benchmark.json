@@ -1,0 +1,29 @@
+{
+  "rows": [
+    {
+      "workers": 1,
+      "env_only_steps_per_s": 4867.576468447416,
+      "ppo_steps_per_s": 3112.6864129139058,
+      "ppo_measured_transitions": 32768,
+      "rss_mb_parent_plus_children": 375.796875
+    },
+    {
+      "workers": 4,
+      "env_only_steps_per_s": 11995.19654938594,
+      "ppo_steps_per_s": 7123.920012033628,
+      "ppo_measured_transitions": 32768,
+      "rss_mb_parent_plus_children": 1333.84375
+    },
+    {
+      "workers": 8,
+      "env_only_steps_per_s": 19855.478311213723,
+      "ppo_steps_per_s": 10052.816709804481,
+      "ppo_measured_transitions": 32768,
+      "rss_mb_parent_plus_children": 2217.0625
+    }
+  ],
+  "best_by_ppo_throughput": 8,
+  "ncpu": 28,
+  "config": "configs/randomized.yaml",
+  "note": "Measured on this machine only; throughput depends on thermal state and background load."
+}

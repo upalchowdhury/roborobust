@@ -1,0 +1,16 @@
+# DEVELOPMENT suite on the VALIDATION split (all six conditions). Use this to confirm the robot stays
+# controllable under the stress levels and to debug; the test split is touched only by test_suite.yaml.
+suite_name: val
+manifest: data/scenarios/main_val.jsonl
+env_config: configs/env.yaml
+eval_seed: 777
+random_baseline_seed: 4242
+primary_condition: combined_stress
+conditions: &conditions
+  nominal:          {left: 1.00, right: 1.00, noise_std: 0.00}
+  within_support:   {left: 0.85, right: 1.10, noise_std: 0.02}
+  weak_left:        {left: 0.60, right: 1.00, noise_std: 0.00}
+  weak_right:       {left: 1.00, right: 0.60, noise_std: 0.00}
+  noisy_sensing:    {left: 1.00, right: 1.00, noise_std: 0.06}
+  combined_stress:  {left: 0.60, right: 1.00, noise_std: 0.06}
+trajectories: {pinned_scenarios: 3}

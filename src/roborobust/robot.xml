@@ -1,0 +1,88 @@
+<!--
+  RoboRobust differential-drive robot + 6 m x 6 m room (self-contained MuJoCo asset).
+
+  Units: SI (m, kg, s, rad, N, N*m). Frame convention: +x forward, +y left, +z up.
+  Nominal values here are mirrored in configs/env.yaml (`robot:` section); env.py asserts they
+  agree when the model is built, so the two cannot silently drift apart.
+
+  Geom groups:  0 = wall/obstacle (collidable AND ray-visible)
+                1 = robot (collidable, never ray-visible)
+                2 = floor + goal marker (floor collidable, marker non-colliding, never ray-visible)
+  Obstacles are added per scenario by scenarios/env code (geoms named obs_<k>, group 0).
+-->
+<mujoco model="roborobust_diffdrive">
+  <compiler angle="radian"/>
+  <!-- implicitfast: the velocity actuators (kv/inertia time constant ~ timestep) need implicit
+       treatment of the actuator velocity derivative; explicit Euler would be unstable. -->
+  <option timestep="0.005" integrator="implicitfast" gravity="0 0 -9.81"/>
+
+  <visual>
+    <global offwidth="640" offheight="480"/>
+    <quality shadowsize="2048"/>
+  </visual>
+
+  <asset>
+    <texture name="grid" type="2d" builtin="checker" width="256" height="256"
+             rgb1="0.82 0.84 0.86" rgb2="0.74 0.76 0.78"/>
+    <material name="floor_mat" texture="grid" texrepeat="12 12" reflectance="0.05"/>
+  </asset>
+
+  <worldbody>
+    <light pos="0 0 6" dir="0 0 -1" diffuse="0.8 0.8 0.8" castshadow="false"/>
+
+    <!-- Floor: priority 0 so wheel/caster geoms (priority 1) set the contact friction. -->
+    <geom name="floor" type="plane" size="3.5 3.5 0.05" material="floor_mat" group="2" priority="0"
+          friction="0.5 0.005 0.0001" condim="3"/>
+
+    <!-- Enclosure: inner faces at +-3.0 m, 0.1 m thick, 0.3 m tall. -->
+    <geom name="wall_n" type="box" pos="0  3.05 0.15" size="3.1 0.05 0.15" rgba="0.35 0.33 0.30 1" group="0"/>
+    <geom name="wall_s" type="box" pos="0 -3.05 0.15" size="3.1 0.05 0.15" rgba="0.35 0.33 0.30 1" group="0"/>
+    <geom name="wall_e" type="box" pos="3.05 0 0.15" size="0.05 3.1 0.15" rgba="0.35 0.33 0.30 1" group="0"/>
+    <geom name="wall_w" type="box" pos="-3.05 0 0.15" size="0.05 3.1 0.15" rgba="0.35 0.33 0.30 1" group="0"/>
+
+    <!-- Goal marker: visual only (contype=conaffinity=0), repositioned through mocap each reset. -->
+    <body name="goal_marker" mocap="true" pos="0 0 0.003">
+      <geom name="goal_disc" type="cylinder" size="0.30 0.002" contype="0" conaffinity="0"
+            rgba="0.10 0.75 0.25 0.55" group="2" mass="0"/>
+    </body>
+
+    <!-- Robot. Body origin = wheel-axle height (0.05 m), centre of mass at the origin. -->
+    <body name="chassis" pos="0 0 0.05">
+      <freejoint name="root"/>
+      <!-- 4.5 kg solid cylinder r=0.18 h=0.12: Izz = m r^2 / 2, Ixx = Iyy = m (3 r^2 + h^2) / 12 -->
+      <inertial pos="0 0 0" mass="4.5" diaginertia="0.0409 0.0409 0.0729"/>
+      <geom name="chassis_geom" type="cylinder" size="0.18 0.06" pos="0 0 0.04"
+            rgba="0.20 0.40 0.85 1" group="1"/>
+      <!-- Low-friction passive supports (ball casters), fore and aft. -->
+      <geom name="caster_front" type="sphere" size="0.02" pos="0.12 0 -0.03" mass="0.05"
+            friction="0.01 0.0005 0.00005" priority="1" rgba="0.15 0.15 0.15 1" group="1"/>
+      <geom name="caster_rear" type="sphere" size="0.02" pos="-0.12 0 -0.03" mass="0.05"
+            friction="0.01 0.0005 0.00005" priority="1" rgba="0.15 0.15 0.15 1" group="1"/>
+      <!-- Orientation marker so heading is visible in renders (no collision). -->
+      <geom name="heading_marker" type="box" size="0.06 0.015 0.005" pos="0.10 0 0.105"
+            contype="0" conaffinity="0" rgba="1 0.85 0.1 1" group="1" mass="0"/>
+
+      <!-- Wheels: radius 0.05 m, track width 0.30 m (centres at y = +-0.15). armature = reflected
+           rotor/gearbox inertia; damping = drivetrain viscous friction (N*m*s/rad). -->
+      <body name="left_wheel" pos="0 0.15 0">
+        <joint name="left_wheel_joint" type="hinge" axis="0 1 0" damping="0.04" armature="0.001"/>
+        <geom name="left_wheel_geom" type="cylinder" size="0.05 0.01" euler="1.5707963 0 0" mass="0.3"
+              friction="1.0 0.005 0.0001" priority="1" rgba="0.1 0.1 0.1 1" group="1"/>
+      </body>
+      <body name="right_wheel" pos="0 -0.15 0">
+        <joint name="right_wheel_joint" type="hinge" axis="0 1 0" damping="0.04" armature="0.001"/>
+        <geom name="right_wheel_geom" type="cylinder" size="0.05 0.01" euler="1.5707963 0 0" mass="0.3"
+              friction="1.0 0.005 0.0001" priority="1" rgba="0.1 0.1 0.1 1" group="1"/>
+      </body>
+    </body>
+  </worldbody>
+
+  <!-- Bounded wheel-velocity actuators: force = clip(kv * (ctrl - wheel_vel), +-forcerange).
+       ctrl in rad/s (10 rad/s * 0.05 m = 0.5 m/s), force in N*m. -->
+  <actuator>
+    <velocity name="left_wheel_motor" joint="left_wheel_joint" kv="0.4"
+              ctrllimited="true" ctrlrange="-10 10" forcelimited="true" forcerange="-0.5 0.5"/>
+    <velocity name="right_wheel_motor" joint="right_wheel_joint" kv="0.4"
+              ctrllimited="true" ctrlrange="-10 10" forcelimited="true" forcerange="-0.5 0.5"/>
+  </actuator>
+</mujoco>

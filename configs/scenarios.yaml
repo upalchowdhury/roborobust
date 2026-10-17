@@ -1,0 +1,26 @@
+# Scenario generator configuration. Splits are generated ONCE, from a dedicated seed, before any training.
+# Changing anything here changes the manifests (and their hashes): treat as a new experiment.
+env_version: roborobust-env-1.0
+split_seed: 20260517          # dedicated split-generation seed (separate from every training/eval seed)
+room_half_size: 3.0           # m
+robot_radius: 0.18            # m
+inflate_margin: 0.12          # m  extra clearance; inflation radius = 0.30 m
+grid_resolution: 0.05         # m  occupancy grid for the (approximate) connectivity check
+min_start_goal_dist: 1.0      # m
+min_layout_separation: 0.25   # m  parameter-space distance required between layouts of DIFFERENT splits
+max_attempts_per_scenario: 500   # bounded deterministic rejection sampling
+
+splits:                       # main task family (1-2 rectangular obstacles); one distinct layout per scenario
+  train: 200
+  val: 40
+  test: 50
+empty_splits:                 # empty-room control family (labelled separately; geometry cannot be disjoint)
+  train: 200
+  val: 20
+
+families:
+  main:
+    n_obstacles: [1, 2]
+    half_size_range: [0.20, 0.70]   # m, per axis -> obstacles 0.4-1.4 m wide
+    min_gap: 0.70                   # m, obstacle<->wall and obstacle<->obstacle clear corridor (>= robot diameter + margins)
+    blocking_fraction: 0.70         # fraction of scenarios whose straight start->goal line is blocked (inflated)

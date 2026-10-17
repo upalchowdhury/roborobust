@@ -1,0 +1,22 @@
+# Shared by every training condition. nominal.yaml / randomized.yaml override ONLY `name` and
+# `randomization`; tests/test_experiment.py enforces that, so the paired comparison cannot drift.
+env_config: configs/env.yaml
+train_manifest: data/scenarios/main_train.jsonl
+val_manifest: data/scenarios/main_val.jsonl
+
+ppo:                         # starting settings from the spec, not tuned
+  policy: MlpPolicy
+  net_arch: [64, 64]         # two hidden layers of 64 for both actor and critic
+  learning_rate: 3.0e-4
+  gamma: 0.999               # must equal env.reward.gamma (train.py enforces); spec's 0.99 caused stalls, see docs/dev_log.md
+  gae_lambda: 0.95
+  clip_range: 0.2
+  n_epochs: 10
+  batch_size: 256
+  n_steps: 1024              # per environment; rollout = n_steps * n_envs (must be divisible by batch_size)
+  ent_coef: 0.0
+
+n_envs: 4                    # overridden by measured benchmark (see DECISIONS.md)
+torch_threads: 1
+device: cpu
+checkpoint_every: 50000      # transitions

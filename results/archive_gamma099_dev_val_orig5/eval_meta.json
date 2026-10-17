@@ -1,0 +1,221 @@
+{
+  "suite": {
+    "suite_name": "val",
+    "manifest": "data/scenarios/main_val.jsonl",
+    "env_config": "configs/env.yaml",
+    "eval_seed": 777,
+    "random_baseline_seed": 4242,
+    "primary_condition": "combined_stress",
+    "conditions": {
+      "nominal": {
+        "left": 1.0,
+        "right": 1.0,
+        "noise_std": 0.0
+      },
+      "within_support": {
+        "left": 0.85,
+        "right": 1.1,
+        "noise_std": 0.02
+      },
+      "weak_left": {
+        "left": 0.6,
+        "right": 1.0,
+        "noise_std": 0.0
+      },
+      "weak_right": {
+        "left": 1.0,
+        "right": 0.6,
+        "noise_std": 0.0
+      },
+      "noisy_sensing": {
+        "left": 1.0,
+        "right": 1.0,
+        "noise_std": 0.06
+      },
+      "combined_stress": {
+        "left": 0.6,
+        "right": 1.0,
+        "noise_std": 0.06
+      }
+    },
+    "trajectories": {
+      "pinned_scenarios": 3
+    }
+  },
+  "suite_sha256": "d61fb1ec02a4c43c5fe7ba043e25a7c258b9307b12d83a3b9162f93c73f8108d",
+  "manifest": "/Users/uc/Documents/robotics/roborobust/data/scenarios/main_val.jsonl",
+  "manifest_sha256": "10a2cc8b0e1e39a4c521b731ea8d17c2b6e35e88928c8fa933f09fc207018be8",
+  "env_cfg_hash": "436d6361982e353d",
+  "policies": [
+    {
+      "run_id": "nominal_s0",
+      "policy": "nominal",
+      "training_seed": 0,
+      "checkpoint_sha256": "a8c8b2aa6f17e7c456eb93aa7a109773a204cec36e6823d7d373f8bf9d2e7672",
+      "train_transitions": 1003520,
+      "train_elapsed_s": 167.92539811134338,
+      "checkpoint": "final.zip"
+    },
+    {
+      "run_id": "nominal_s1",
+      "policy": "nominal",
+      "training_seed": 1,
+      "checkpoint_sha256": "be4d28519159fd81cba9c2ce3d9d00052f8ace61c50edc71e90b311ff51f87e4",
+      "train_transitions": 1003520,
+      "train_elapsed_s": 164.6310431957245,
+      "checkpoint": "final.zip"
+    },
+    {
+      "run_id": "nominal_s2",
+      "policy": "nominal",
+      "training_seed": 2,
+      "checkpoint_sha256": "7506ad2665c56cc9947b3fa0199254c41ef2ea43277da7e6e294739b3310c971",
+      "train_transitions": 1003520,
+      "train_elapsed_s": 163.9405119419098,
+      "checkpoint": "final.zip"
+    },
+    {
+      "run_id": "nominal_s3",
+      "policy": "nominal",
+      "training_seed": 3,
+      "checkpoint_sha256": "881eb667a11076aed4ea773ab942be219af4c03fd631caddb209393c18848023",
+      "train_transitions": 1003520,
+      "train_elapsed_s": 165.71592497825623,
+      "checkpoint": "final.zip"
+    },
+    {
+      "run_id": "nominal_s4",
+      "policy": "nominal",
+      "training_seed": 4,
+      "checkpoint_sha256": "e56f25fc2356c78ddd51776fb2c559641e63aa27d8a63c6da833881e7d536d5b",
+      "train_transitions": 1003520,
+      "train_elapsed_s": 164.76214408874512,
+      "checkpoint": "final.zip"
+    },
+    {
+      "run_id": "randomized_s0",
+      "policy": "randomized",
+      "training_seed": 0,
+      "checkpoint_sha256": "4012a1c511ac599aeeef77723366b41f181ca09fd50370c6c1f4d041191f1cd1",
+      "train_transitions": 1003520,
+      "train_elapsed_s": 167.94220280647278,
+      "checkpoint": "final.zip"
+    },
+    {
+      "run_id": "randomized_s1",
+      "policy": "randomized",
+      "training_seed": 1,
+      "checkpoint_sha256": "a881a5e8837be75c3540e5638d268d6e9b654c2aa3cd8ca9eb4737308caa3756",
+      "train_transitions": 1003520,
+      "train_elapsed_s": 165.47309803962708,
+      "checkpoint": "final.zip"
+    },
+    {
+      "run_id": "randomized_s2",
+      "policy": "randomized",
+      "training_seed": 2,
+      "checkpoint_sha256": "189460bd9f2fa8e08c74ac2f02d55858acc312552cc023949dedbd67d08d32e8",
+      "train_transitions": 1003520,
+      "train_elapsed_s": 165.58278894424438,
+      "checkpoint": "final.zip"
+    },
+    {
+      "run_id": "randomized_s3",
+      "policy": "randomized",
+      "training_seed": 3,
+      "checkpoint_sha256": "7ee17802fd003264e490ba2f9a21b7c7cb31a6f5c631943dfdcd35032336403c",
+      "train_transitions": 1003520,
+      "train_elapsed_s": 166.4936339855194,
+      "checkpoint": "final.zip"
+    },
+    {
+      "run_id": "randomized_s4",
+      "policy": "randomized",
+      "training_seed": 4,
+      "checkpoint_sha256": "1f26749696e4a0893b2168992a3c28c97dd8050b3fbccefd71dec6703d83b9dc",
+      "train_transitions": 1003520,
+      "train_elapsed_s": 165.54051780700684,
+      "checkpoint": "final.zip"
+    },
+    {
+      "run_id": "baseline:scripted",
+      "policy": "scripted",
+      "training_seed": null,
+      "checkpoint_sha256": null,
+      "train_transitions": 0,
+      "train_elapsed_s": 0.0
+    }
+  ],
+  "expected_episodes": 2640,
+  "recorded_episodes": 2640,
+  "complete": true,
+  "incomplete_tasks": [],
+  "task_weights_hash": [
+    [
+      "nominal_s0",
+      "2e34891af19d63338db3b29d4628039713fdc4c355d18e47c8bd778f5866cb83"
+    ],
+    [
+      "nominal_s1",
+      "a9397ef55c5830d6c4f55e98b3232fe4fdb8359ab28999b3f911c3ee069aedaf"
+    ],
+    [
+      "nominal_s2",
+      "3471919d4b46aac1070de8b579a48f7167e51571715fc9509f76268c785b992a"
+    ],
+    [
+      "nominal_s3",
+      "4a7b77893289de785d130d8cf24743555a5c06e5974f090963086ad85f777812"
+    ],
+    [
+      "nominal_s4",
+      "504ffdac4ab6e78eccea1ace629b09e30e9c60446c9d9b695ce65d7147ea70d3"
+    ],
+    [
+      "randomized_s0",
+      "28d06562f130b07ea5cca382055b783a5791a756320820c0a3919b5e8fea44df"
+    ],
+    [
+      "randomized_s1",
+      "49bf22cd80fcd94c35669f2d9acb3db44ff17212dc2daa4c5c93121bc1ad96d6"
+    ],
+    [
+      "randomized_s2",
+      "592f63b97852a0b827c018c70e6b1eb1799d3bc457913780afd34d41a54839ef"
+    ],
+    [
+      "randomized_s3",
+      "1accd75e414d4832d9ef0dd7a354726c28aa1423f1f3d1f367087d1162b5e374"
+    ],
+    [
+      "randomized_s4",
+      "467e849bc89d99ab4c6c0390321bcc69f15df24022d4541d0f3e94fec1c5b23f"
+    ]
+  ],
+  "elapsed_s": 77.32584118843079,
+  "checkpoint_name": "final.zip",
+  "packages": {
+    "mujoco": "3.16.0",
+    "gymnasium": "1.4.0",
+    "stable-baselines3": "2.9.0",
+    "torch": "2.14.1",
+    "numpy": "2.4.6",
+    "pandas": "3.0.6",
+    "matplotlib": "3.11.2",
+    "pyyaml": "6.0.3",
+    "pytest": "9.1.1"
+  },
+  "platform": {
+    "python": "3.11.15",
+    "implementation": "CPython",
+    "machine": "arm64",
+    "system": "Darwin",
+    "release": "25.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit"
+  },
+  "git": {
+    "commit": "HEAD",
+    "dirty": true
+  },
+  "code_hash": "ee949e9f69d41b55"
+}

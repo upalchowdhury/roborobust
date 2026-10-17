@@ -1,0 +1,86 @@
+{
+  "suite": {
+    "suite_name": "empty_val",
+    "manifest": "data/scenarios/empty_val.jsonl",
+    "env_config": "configs/env.yaml",
+    "eval_seed": 777,
+    "random_baseline_seed": 4242,
+    "primary_condition": "nominal",
+    "conditions": {
+      "nominal": {
+        "left": 1.0,
+        "right": 1.0,
+        "noise_std": 0.0
+      }
+    },
+    "trajectories": {
+      "pinned_scenarios": 2
+    }
+  },
+  "suite_sha256": "3881995048bbd682f6ad1f86bb743fbd136e7e844ee23b9478163c1a5af85ff6",
+  "manifest": "/Users/uc/Documents/robotics/roborobust/data/scenarios/empty_val.jsonl",
+  "manifest_sha256": "06be23b9bbf8b316cfa59c5b2fa6c5e447af4a3cf2919e23f10dc5d2ca254312",
+  "env_cfg_hash": "436d6361982e353d",
+  "policies": [
+    {
+      "run_id": "baseline:scripted",
+      "policy": "scripted",
+      "training_seed": null,
+      "checkpoint_sha256": null,
+      "train_transitions": 0,
+      "train_elapsed_s": 0.0
+    },
+    {
+      "run_id": "diag_empty_s1",
+      "policy": "empty_diag",
+      "training_seed": 1,
+      "checkpoint_sha256": "5db6aa7b7ca9ef40ff84189a2e4842d02a2dfe5414ccc8ec29bc1842861c05b7",
+      "train_transitions": 200704,
+      "train_elapsed_s": 35.914669036865234
+    },
+    {
+      "run_id": "baseline:random",
+      "policy": "random",
+      "training_seed": null,
+      "checkpoint_sha256": null,
+      "train_transitions": 0,
+      "train_elapsed_s": 0.0
+    }
+  ],
+  "expected_episodes": 60,
+  "recorded_episodes": 60,
+  "complete": true,
+  "incomplete_tasks": [],
+  "task_weights_hash": [
+    [
+      "diag_empty_s1",
+      "dd4069883e35b54566c4f74b369cbb5d2a6a8495162a7c2af5f6470c7e56eee5"
+    ]
+  ],
+  "elapsed_s": 3.2764549255371094,
+  "checkpoint_name": "final.zip",
+  "packages": {
+    "mujoco": "3.16.0",
+    "gymnasium": "1.4.0",
+    "stable-baselines3": "2.9.0",
+    "torch": "2.14.1",
+    "numpy": "2.4.6",
+    "pandas": "3.0.6",
+    "matplotlib": "3.11.2",
+    "pyyaml": "6.0.3",
+    "pytest": "9.1.1"
+  },
+  "platform": {
+    "python": "3.11.15",
+    "implementation": "CPython",
+    "machine": "arm64",
+    "system": "Darwin",
+    "release": "25.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit"
+  },
+  "git": {
+    "commit": "HEAD",
+    "dirty": true
+  },
+  "code_hash": "9de4257209f9a23c"
+}

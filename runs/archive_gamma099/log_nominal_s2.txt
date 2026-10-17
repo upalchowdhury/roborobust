@@ -1,0 +1,25 @@
+[train] it=10 steps=40960 elapsed=7s success=0.00
+[train] it=20 steps=81920 elapsed=13s success=0.00
+[train] it=30 steps=122880 elapsed=20s success=0.00
+[train] it=40 steps=163840 elapsed=27s success=0.00
+[train] it=50 steps=204800 elapsed=33s success=0.00
+[train] it=60 steps=245760 elapsed=40s success=0.00
+[train] it=70 steps=286720 elapsed=47s success=0.00
+[train] it=80 steps=327680 elapsed=53s success=0.00
+[train] it=90 steps=368640 elapsed=60s success=0.00
+[train] it=100 steps=409600 elapsed=67s success=0.00
+[train] it=110 steps=450560 elapsed=74s success=0.00
+[train] it=120 steps=491520 elapsed=80s success=0.00
+[train] it=130 steps=532480 elapsed=87s success=0.00
+[train] it=140 steps=573440 elapsed=94s success=0.00
+[train] it=150 steps=614400 elapsed=100s success=0.00
+[train] it=160 steps=655360 elapsed=107s success=0.00
+[train] it=170 steps=696320 elapsed=114s success=0.00
+[train] it=180 steps=737280 elapsed=120s success=0.00
+[train] it=190 steps=778240 elapsed=127s success=0.00
+[train] it=200 steps=819200 elapsed=134s success=0.00
+[train] it=210 steps=860160 elapsed=140s success=0.00
+[train] it=220 steps=901120 elapsed=147s success=0.00
+[train] it=230 steps=942080 elapsed=154s success=0.00
+[train] it=240 steps=983040 elapsed=160s success=0.00
+[train] done nominal_s2: 1003520 transitions in 164s (6121/s); reload_ok=True finite_losses=True

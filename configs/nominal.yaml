@@ -1,0 +1,4 @@
+base: base_train.yaml
+name: nominal
+randomization:
+  enabled: false             # fixed actuators, noiseless range readings

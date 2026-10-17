@@ -1,0 +1,5 @@
+# Empty-room learning diagnostic (Gate C): same PPO + same nominal conditions, empty-room manifests.
+base: nominal.yaml
+name: empty_diag
+train_manifest: data/scenarios/empty_train.jsonl
+val_manifest: data/scenarios/empty_val.jsonl

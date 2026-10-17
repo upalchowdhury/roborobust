@@ -1,0 +1,6 @@
+base: base_train.yaml
+name: randomized
+randomization:
+  enabled: true              # sampled independently per episode at reset
+  motor_mult_range: [0.8, 1.2]        # left and right drawn independently
+  range_noise_std_range: [0.0, 0.03]  # metres

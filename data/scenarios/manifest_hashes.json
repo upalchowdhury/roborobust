@@ -1,0 +1,111 @@
+{
+  "env_version": "roborobust-env-1.0",
+  "generation_stats": {
+    "empty_train": {
+      "n": 200,
+      "rejections": {
+        "blocking": 0,
+        "disconnected": 0,
+        "layout": 0,
+        "layout_dup": 0,
+        "startgoal": 20
+      }
+    },
+    "empty_val": {
+      "n": 20,
+      "rejections": {
+        "blocking": 0,
+        "disconnected": 0,
+        "layout": 0,
+        "layout_dup": 0,
+        "startgoal": 1
+      }
+    },
+    "main_test": {
+      "n": 50,
+      "rejections": {
+        "blocking": 54,
+        "disconnected": 0,
+        "layout": 0,
+        "layout_dup": 1,
+        "startgoal": 8
+      }
+    },
+    "main_train": {
+      "n": 200,
+      "rejections": {
+        "blocking": 147,
+        "disconnected": 0,
+        "layout": 0,
+        "layout_dup": 132,
+        "startgoal": 37
+      }
+    },
+    "main_val": {
+      "n": 40,
+      "rejections": {
+        "blocking": 36,
+        "disconnected": 0,
+        "layout": 0,
+        "layout_dup": 10,
+        "startgoal": 7
+      }
+    }
+  },
+  "generator_config": {
+    "empty_splits": {
+      "train": 200,
+      "val": 20
+    },
+    "env_version": "roborobust-env-1.0",
+    "families": {
+      "main": {
+        "blocking_fraction": 0.7,
+        "half_size_range": [
+          0.2,
+          0.7
+        ],
+        "min_gap": 0.7,
+        "n_obstacles": [
+          1,
+          2
+        ]
+      }
+    },
+    "grid_resolution": 0.05,
+    "inflate_margin": 0.12,
+    "max_attempts_per_scenario": 500,
+    "min_layout_separation": 0.25,
+    "min_start_goal_dist": 1.0,
+    "robot_radius": 0.18,
+    "room_half_size": 3.0,
+    "split_seed": 20260517,
+    "splits": {
+      "test": 50,
+      "train": 200,
+      "val": 40
+    }
+  },
+  "manifests": {
+    "empty_train.jsonl": {
+      "n": 200,
+      "sha256": "b7bff9091317abfe26f0b975af2910a295532ef8736b9cf9313d528e985203f5"
+    },
+    "empty_val.jsonl": {
+      "n": 20,
+      "sha256": "06be23b9bbf8b316cfa59c5b2fa6c5e447af4a3cf2919e23f10dc5d2ca254312"
+    },
+    "main_test.jsonl": {
+      "n": 50,
+      "sha256": "c9d62ee1aa400d1f833dbf2d42c5404ec4185b55b5d1afbc4c8c59fbd9f42e04"
+    },
+    "main_train.jsonl": {
+      "n": 200,
+      "sha256": "7eee9ec304f799b65990c6264f0422b5267d7f58e71c06b4c35e02f74dba3ac6"
+    },
+    "main_val.jsonl": {
+      "n": 40,
+      "sha256": "10a2cc8b0e1e39a4c521b731ea8d17c2b6e35e88928c8fa933f09fc207018be8"
+    }
+  }
+}

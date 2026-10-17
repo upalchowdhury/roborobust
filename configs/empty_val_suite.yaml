@@ -1,0 +1,10 @@
+# Empty-room validation suite (Gate C diagnostic). Nominal condition only.
+suite_name: empty_val
+manifest: data/scenarios/empty_val.jsonl
+env_config: configs/env.yaml
+eval_seed: 777
+random_baseline_seed: 4242
+primary_condition: nominal
+conditions:
+  nominal: {left: 1.0, right: 1.0, noise_std: 0.0}
+trajectories: {pinned_scenarios: 2}

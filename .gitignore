@@ -1,0 +1,18 @@
+.venv/
+__pycache__/
+*.egg-info/
+.pytest_cache/
+
+# Development scratch and bulky intermediates (the dev log in docs/ records what they showed)
+runs/dev/
+runs/smoke/
+runs/diag_*/
+runs/*.log
+runs/*.txt
+runs/**/checkpoints/
+results/dev_*/
+results/diag_*/
+results/validation/
+
+# Kept on purpose: runs/<final>/final.zip + meta.json + progress.csv, results/<final>/ (raw episodes + trajectories),
+# reports/, data/scenarios/ (frozen manifests), requirements.lock

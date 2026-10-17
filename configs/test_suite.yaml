@@ -1,0 +1,21 @@
+# FINAL HELD-OUT SUITE. Frozen before any test score was seen (see DECISIONS.md, "Protocol freeze").
+# Do not edit conditions, seeds or the primary endpoint after test evaluation has started: if test
+# results motivate any change, the test split becomes development data and a NEW test split must be
+# generated. Every evaluation of this suite is appended to results/test_access_log.jsonl.
+suite_name: test
+manifest: data/scenarios/main_test.jsonl
+env_config: configs/env.yaml
+eval_seed: 20260601          # common exogenous noise streams: same for every policy
+random_baseline_seed: 4242
+primary_condition: combined_stress     # primary endpoint: safe-arrival rate here, on unseen layouts
+conditions:
+  nominal:          {left: 1.00, right: 1.00, noise_std: 0.00}
+  within_support:   {left: 0.85, right: 1.10, noise_std: 0.02}
+  weak_left:        {left: 0.60, right: 1.00, noise_std: 0.00}
+  weak_right:       {left: 1.00, right: 0.60, noise_std: 0.00}
+  noisy_sensing:    {left: 1.00, right: 1.00, noise_std: 0.06}
+  combined_stress:  {left: 0.60, right: 1.00, noise_std: 0.06}
+# Trajectory logging: these scenario indices (first 3 test scenarios, fixed BEFORE results) are saved
+# for every policy x condition so paired replays always exist; plus first success / first two failures
+# per policy x seed x condition by scenario order.
+trajectories: {pinned_scenarios: 3}

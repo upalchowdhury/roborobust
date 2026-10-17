@@ -1,0 +1,221 @@
+{
+  "suite": {
+    "suite_name": "test",
+    "manifest": "data/scenarios/main_test.jsonl",
+    "env_config": "configs/env.yaml",
+    "eval_seed": 20260601,
+    "random_baseline_seed": 4242,
+    "primary_condition": "combined_stress",
+    "conditions": {
+      "nominal": {
+        "left": 1.0,
+        "right": 1.0,
+        "noise_std": 0.0
+      },
+      "within_support": {
+        "left": 0.85,
+        "right": 1.1,
+        "noise_std": 0.02
+      },
+      "weak_left": {
+        "left": 0.6,
+        "right": 1.0,
+        "noise_std": 0.0
+      },
+      "weak_right": {
+        "left": 1.0,
+        "right": 0.6,
+        "noise_std": 0.0
+      },
+      "noisy_sensing": {
+        "left": 1.0,
+        "right": 1.0,
+        "noise_std": 0.06
+      },
+      "combined_stress": {
+        "left": 0.6,
+        "right": 1.0,
+        "noise_std": 0.06
+      }
+    },
+    "trajectories": {
+      "pinned_scenarios": 3
+    }
+  },
+  "suite_sha256": "9ec3ef9c0f0de7374a854eb87a1013dcf298debfe5ac035b8c3c5904ef56c831",
+  "manifest": "/Users/uc/Documents/robotics/roborobust/data/scenarios/main_test.jsonl",
+  "manifest_sha256": "c9d62ee1aa400d1f833dbf2d42c5404ec4185b55b5d1afbc4c8c59fbd9f42e04",
+  "env_cfg_hash": "061f7e4cd38dc641",
+  "policies": [
+    {
+      "run_id": "nominal_s1",
+      "policy": "nominal",
+      "training_seed": 1,
+      "checkpoint_sha256": "83e7c05a67d5e82ce4300c9fd8bd0a27203efb1e7c180f39211f899edf21ea0e",
+      "train_transitions": 503808,
+      "train_elapsed_s": null,
+      "checkpoint": "checkpoints/step_000503808.zip"
+    },
+    {
+      "run_id": "nominal_s0",
+      "policy": "nominal",
+      "training_seed": 0,
+      "checkpoint_sha256": "4cb74f0c459bc5ed4c7bbb699abb4ad1c331c884fc8348065e00e229dea56a6d",
+      "train_transitions": 503808,
+      "train_elapsed_s": null,
+      "checkpoint": "checkpoints/step_000503808.zip"
+    },
+    {
+      "run_id": "nominal_s2",
+      "policy": "nominal",
+      "training_seed": 2,
+      "checkpoint_sha256": "90cb71c505056d857b07ed7e941a9641910f377b518743568a98c02972009d59",
+      "train_transitions": 503808,
+      "train_elapsed_s": null,
+      "checkpoint": "checkpoints/step_000503808.zip"
+    },
+    {
+      "run_id": "nominal_s3",
+      "policy": "nominal",
+      "training_seed": 3,
+      "checkpoint_sha256": "470d736a3e0db23f38930d37bc6f85d9b31efbce532c0c2fe4af2d06c7bae1e3",
+      "train_transitions": 503808,
+      "train_elapsed_s": null,
+      "checkpoint": "checkpoints/step_000503808.zip"
+    },
+    {
+      "run_id": "nominal_s4",
+      "policy": "nominal",
+      "training_seed": 4,
+      "checkpoint_sha256": "d47d894c2b39846b5980097da9814bfb6ead63dce4a943ceafdbb247adf45626",
+      "train_transitions": 503808,
+      "train_elapsed_s": null,
+      "checkpoint": "checkpoints/step_000503808.zip"
+    },
+    {
+      "run_id": "randomized_s0",
+      "policy": "randomized",
+      "training_seed": 0,
+      "checkpoint_sha256": "d9c1322c8454bfe5bd34867d8799a4970704737082a36c7ba7580677c0e68cea",
+      "train_transitions": 503808,
+      "train_elapsed_s": null,
+      "checkpoint": "checkpoints/step_000503808.zip"
+    },
+    {
+      "run_id": "randomized_s1",
+      "policy": "randomized",
+      "training_seed": 1,
+      "checkpoint_sha256": "4c83bd80f0e38c2b6fa5af2950c3098f66c265904a91fc91992b642761106e13",
+      "train_transitions": 503808,
+      "train_elapsed_s": null,
+      "checkpoint": "checkpoints/step_000503808.zip"
+    },
+    {
+      "run_id": "randomized_s2",
+      "policy": "randomized",
+      "training_seed": 2,
+      "checkpoint_sha256": "62f0716d88d55ddb00d9ee707c571cc344fbf352e1f635ace9adc28835c71a09",
+      "train_transitions": 503808,
+      "train_elapsed_s": null,
+      "checkpoint": "checkpoints/step_000503808.zip"
+    },
+    {
+      "run_id": "randomized_s3",
+      "policy": "randomized",
+      "training_seed": 3,
+      "checkpoint_sha256": "10cb8d3749c865e3377ffa288c171ac309718e8363b400d4ec112e5522d37def",
+      "train_transitions": 503808,
+      "train_elapsed_s": null,
+      "checkpoint": "checkpoints/step_000503808.zip"
+    },
+    {
+      "run_id": "randomized_s4",
+      "policy": "randomized",
+      "training_seed": 4,
+      "checkpoint_sha256": "8300a09f966b78f4b5a3096e8f0274636b8299491213f6b296ece8e659c1f0ce",
+      "train_transitions": 503808,
+      "train_elapsed_s": null,
+      "checkpoint": "checkpoints/step_000503808.zip"
+    },
+    {
+      "run_id": "baseline:scripted",
+      "policy": "scripted",
+      "training_seed": null,
+      "checkpoint_sha256": null,
+      "train_transitions": 0,
+      "train_elapsed_s": 0.0
+    }
+  ],
+  "expected_episodes": 3300,
+  "recorded_episodes": 3300,
+  "complete": true,
+  "incomplete_tasks": [],
+  "task_weights_hash": [
+    [
+      "nominal_s0",
+      "641b4bb184670990334d1cf33fac00a674e88421d971d774b3abdcb858e7debc"
+    ],
+    [
+      "nominal_s1",
+      "1460b87a6a82b4d185b074b1a2c6f8e2509b8a02da2b74801b0f511ac740113a"
+    ],
+    [
+      "nominal_s2",
+      "0a00910d1501e6ca3d31677b447a15075e1c0d5c1e799df610988f1b867d7053"
+    ],
+    [
+      "nominal_s3",
+      "5db9e99dfdc867cbba19999e7b8327a3f9a41c7f16a9b3fef5afd8d3239775c4"
+    ],
+    [
+      "nominal_s4",
+      "47e8f9b91c64bc94abaf93aa7d8f8524564f1722834cfa2f263358bf94a23e18"
+    ],
+    [
+      "randomized_s0",
+      "291867a8ac824601ae8780d7acc13792989c7c9705c94324a880b90627be95d6"
+    ],
+    [
+      "randomized_s1",
+      "17280b2bd4554fa57afe90861ee4e8c441aaab1f87f4bb9fa1e0721215f83102"
+    ],
+    [
+      "randomized_s2",
+      "5b319c0a371df26720dc479dfca65eb677cb47846c7f45096293e1a6f88519ca"
+    ],
+    [
+      "randomized_s3",
+      "41dd257338029d42de24fe75faa6b5e0f623921298e1e4b5b55ee75c2460f894"
+    ],
+    [
+      "randomized_s4",
+      "92461aa75739dcb5f3640d00d3a73d2aab39bb6817aacc79b2df00c0c965ac57"
+    ]
+  ],
+  "elapsed_s": 34.19912075996399,
+  "checkpoint_name": "checkpoints/step_000503808.zip",
+  "packages": {
+    "mujoco": "3.16.0",
+    "gymnasium": "1.4.0",
+    "stable-baselines3": "2.9.0",
+    "torch": "2.14.1",
+    "numpy": "2.4.6",
+    "pandas": "3.0.6",
+    "matplotlib": "3.11.2",
+    "pyyaml": "6.0.3",
+    "pytest": "9.1.1"
+  },
+  "platform": {
+    "python": "3.11.15",
+    "implementation": "CPython",
+    "machine": "arm64",
+    "system": "Darwin",
+    "release": "25.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit"
+  },
+  "git": {
+    "commit": "HEAD",
+    "dirty": true
+  },
+  "code_hash": "7dfb7cc80346bfa7"
+}
