@@ -60,7 +60,7 @@ final runs were trained; the `meta.json` of runs `nominal_s*`/`randomized_s*` an
 The report validates the recorded value (40 hex characters) and prints "none" otherwise; the *source code hash* (sha256 over the package's .py/.xml files) is the code identifier for these results.
 Provenance records were not edited by hand and the runs were not retrained for a metadata field.
 
-Update: the repository's first commit (`a13dd2d`, 2026-10-17 11:48, made by the repository owner) postdates all training (final runs started 11:08) and both test evaluations (11:24-11:25), so no
+Update: the repository's first commit (`ab4d0b4`, 2026-10-17 11:48, made by the repository owner; commit hashes in this repository changed once when author identities were rewritten to the owner's GitHub noreply address, file contents were unchanged) postdates all training (final runs started 11:08) and both test evaluations (11:24-11:25), so no
 valid commit is recorded with any result; the source code hash in each `eval_meta.json` identifies the code that produced it. Verified from file modification times: the environment, scoring and training code
 (`env.py`, `train.py`, `verifier.py`, `rewards.py`, `sensors.py`, `randomization.py`, `scenarios.py`, `baselines.py`, `robot.xml`; last modified 10:38 or earlier) did not change after the final training began;
 only metadata, report-generation and replay code (`evaluate.py`, `runtime.py`, `analyze.py`, `cli.py`, `replay.py`) was edited afterwards, so HEAD is not byte-identical to the code that ran the experiments.
