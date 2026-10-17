@@ -1,0 +1,5 @@
+# STRETCH (not run for the reported results): range-noise randomization only. Identical to randomized.yaml except motors are not randomized.
+base: randomized.yaml
+name: noise_only
+randomization:
+  motor_mult_range: [1.0, 1.0]

@@ -666,7 +666,7 @@ def build_markdown(df, meta, cells, across, boot_df, tax, integ, chosen, primary
     L.append("## Reproducibility table\n")
     git = meta.get("git") or {}
     valid_commit = bool(re.fullmatch(r"[0-9a-f]{40}", str(git.get("commit") or "")))  # early runs recorded the literal "HEAD" (bug, see DECISIONS.md)
-    git_txt = (str(git.get("commit")) + (" (uncommitted changes)" if git.get("dirty") else "")) if valid_commit else "none (repository has no commit; the source code hash below identifies the code)"
+    git_txt = (str(git.get("commit")) + (" (uncommitted changes)" if git.get("dirty") else "")) if valid_commit else "none recorded at run time: these results were produced before the repository's first commit; the source code hash below identifies the code that produced them (DECISIONS.md, Provenance note)"
     rows = [("evaluation suite sha256", meta["suite_sha256"]), (f"{suite['manifest'].split('/')[-1]} sha256", meta["manifest_sha256"]),
             ("environment config + robot.xml hash", ", ".join(sorted(set(df.env_cfg_hash)))), ("source code hash (package .py/.xml)", meta["code_hash"]),
             ("git commit", git_txt),

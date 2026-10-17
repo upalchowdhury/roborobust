@@ -156,7 +156,7 @@ def _replay(args) -> int:
         r = check_resimulation(args.episode)
         print(json.dumps(r, indent=2))
         return 0 if r["within_tolerance"] else 1
-    replay(args.episode, speed=args.speed, png=args.png, gif=args.gif, no_viewer=args.no_viewer)
+    replay(args.episode, speed=args.speed, png=args.png, gif=args.gif, no_viewer=args.no_viewer, viewer_seconds=args.viewer_seconds)
     return 0
 
 
@@ -219,6 +219,7 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("--png", default=None, help="write a top-down trajectory PNG (headless)")
     s.add_argument("--gif", default=None, help="write an animated GIF using the offscreen renderer (headless)")
     s.add_argument("--no-viewer", action="store_true")
+    s.add_argument("--viewer-seconds", type=float, default=None, help="close the interactive viewer automatically after this many seconds")
     s.add_argument("--resimulate-check", action="store_true",
                    help="re-run the recorded actions and report state divergence from the recording (replay itself restores stored states)")
     s.set_defaults(fn=_replay)

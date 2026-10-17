@@ -131,8 +131,17 @@ python -m roborobust replay --episode results/weekend/trajectories/randomized_s0
 ```
 
 The viewer restores recorded simulator states (qpos/qvel at each control boundary); it does not re-simulate. `--resimulate-check` re-runs the recorded actions separately: for this episode it reproduces the recorded states with 0.0 divergence on this machine.
-Headless PNG/GIF output and the re-simulation check were exercised; the interactive `mjpython` window itself could not be opened in the session that built this repo, so run it once yourself (under plain `python` it prints this guidance instead of crashing).
+Headless PNG/GIF output and the re-simulation check were exercised. The interactive viewer was launched under `mjpython` for a bounded run (`--viewer-seconds 6`) and exited cleanly, but whoever built this repo could not see the window, so look at it once yourself (under plain `python` the command prints guidance instead of crashing).
 Pre-rendered versions of this example are in `reports/weekend/replays/`.
+
+## Why Gymnasium, and what "verifier" means here
+
+* **Gymnasium** is the environment API (`RoboRobustEnv` subclasses `gymnasium.Env`) because Stable-Baselines3's PPO requires it and both libraries ship checkers that the tests run. It is not needed for the physics (that is plain MuJoCo) and you could train with a hand-written loop, at the cost of SB3 and the standard checks.
+* **`verifier.py`** is a state-based success/failure checker that is kept independent of the reward, not an LLM-style "RL with verifiable rewards" framework. Nothing in this project involves a language model, so such environment libraries are not needed.
+
+## Demo
+
+[DEMO.md](DEMO.md) is a three-minute beat sheet with honest talking points; `python scripts/make_demo_assets.py` builds the pictures and GIFs it uses (into `demo/`) from saved trajectories. The recording itself is yours to make.
 
 ## What you need to be able to explain (spec section 14)
 
@@ -164,9 +173,10 @@ See [REPRODUCE.md](REPRODUCE.md) for the exact command sequence, runtimes and fi
 ```
 src/roborobust/  env.py robot.xml scenarios.py sensors.py randomization.py verifier.py rewards.py baselines.py
                  train.py evaluate.py analyze.py replay.py cli.py  (+ config.py runtime.py validation.py benchmark.py)
-configs/         env.yaml scenarios.yaml base_train.yaml nominal.yaml randomized.yaml *_suite.yaml
+configs/         env.yaml scenarios.yaml base_train.yaml nominal.yaml randomized.yaml *_suite.yaml (+ motor_only/noise_only: provided, not run)
 data/scenarios/  frozen manifests + manifest_hashes.json
 tests/           physics, sensors, verifier, rewards, env contract, scenarios, experiment integrity, statistics
 scripts/         dev sweeps (auditable tuning), main training launcher, dev-log generator
-docs/            spec.md (the task spec), dev_log.md (tuning history and failures)
+docs/            spec.md (the task spec), dev_log.md (tuning history and failures), raw dev-sweep results (*.jsonl)
+demo/            demo pictures/GIFs built from saved trajectories (see DEMO.md)
 ```

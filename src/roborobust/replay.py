@@ -57,6 +57,26 @@ def plot_topdown(ax, arrays: dict, meta: dict, color: str = "#2a78d6", label: st
         s.set_visible(False)
 
 
+def plot_sensors(ax, arrays: dict, meta: dict, step: int, color: str = "#2a78d6") -> None:
+    """Top-down snapshot of the 24 range rays at one control step, from the *stored* observation
+    (so under noisy conditions the fan shows what the policy actually received). Rays that read the
+    3 m maximum are dashed; hits end in a dot."""
+    plot_topdown(ax, arrays, meta, color=color)
+    q = arrays["qpos"][step]
+    yaw = float(yaw_from_qpos(arrays["qpos"][step:step + 1])[0])
+    ranges = arrays["obs"][step][:24].astype(float) * 3.0
+    for i, r in enumerate(ranges):
+        a = yaw + 2 * math.pi * i / 24
+        ex, ey = q[0] + r * math.cos(a), q[1] + r * math.sin(a)
+        full = r >= 3.0 - 1e-6
+        ax.plot([q[0], ex], [q[1], ey], "-" if not full else "--", color="#52514e", lw=0.8 if not full else 0.6, alpha=0.9 if not full else 0.5, zorder=3)
+        if not full:
+            ax.plot(ex, ey, "o", ms=2.5, color="#e34948", zorder=6)
+    ax.plot(q[0], q[1], "o", ms=7, color=color, mec="white", mew=1.2, zorder=7)
+    ax.annotate("", xy=(q[0] + 0.45 * math.cos(yaw), q[1] + 0.45 * math.sin(yaw)), xytext=(q[0], q[1]),
+                arrowprops=dict(arrowstyle="-|>", color="black", lw=1.4), zorder=8)
+
+
 def check_resimulation(path: str | Path, tol: float = 1e-6) -> dict:
     """Re-run the recorded raw actions from the recorded scenario/domain/noise seed and compare states."""
     from roborobust.config import EnvConfig, load_env_config
@@ -110,7 +130,7 @@ def render_gif(arrays: dict, meta: dict, out: str | Path, speed: float = 1.0, st
     frames[0].save(out, save_all=True, append_images=frames[1:], duration=int(1000 * dt * stride / speed), loop=0)
 
 
-def view(arrays: dict, meta: dict, speed: float = 1.0) -> None:
+def view(arrays: dict, meta: dict, speed: float = 1.0, max_seconds: float | None = None) -> None:
     """Interactive passive viewer. On macOS this must be launched with ``mjpython``."""
     import mujoco
     import mujoco.viewer
@@ -124,11 +144,12 @@ def view(arrays: dict, meta: dict, speed: float = 1.0) -> None:
     mocap = int(model.body_mocapid[mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, "goal_marker")])
     data.mocap_pos[mocap] = (sc.goal["x"], sc.goal["y"], 0.003)
     t = arrays["t"]
+    deadline = None if max_seconds is None else time.time() + max_seconds
     with mujoco.viewer.launch_passive(model, data) as v:
         v.cam.distance, v.cam.elevation, v.cam.azimuth = 9.0, -60.0, 90.0
-        while v.is_running():
+        while v.is_running() and (deadline is None or time.time() < deadline):
             for i in range(len(t)):
-                if not v.is_running():
+                if not v.is_running() or (deadline is not None and time.time() >= deadline):
                     break
                 data.qpos[:] = arrays["qpos"][i]
                 data.qvel[:] = arrays["qvel"][i]
@@ -138,7 +159,8 @@ def view(arrays: dict, meta: dict, speed: float = 1.0) -> None:
             time.sleep(1.0)
 
 
-def replay(episode: str, speed: float = 1.0, png: str | None = None, gif: str | None = None, no_viewer: bool = False) -> None:
+def replay(episode: str, speed: float = 1.0, png: str | None = None, gif: str | None = None, no_viewer: bool = False,
+           viewer_seconds: float | None = None) -> None:
     arrays, meta = load_episode(episode)
     rec = meta.get("episode_record", {})
     print(f"episode {rec.get('episode_id')}: {rec.get('terminal_reason')} after {rec.get('steps')} steps "
@@ -160,7 +182,7 @@ def replay(episode: str, speed: float = 1.0, png: str | None = None, gif: str | 
     if no_viewer or png or gif:
         return
     try:
-        view(arrays, meta, speed)
+        view(arrays, meta, speed, max_seconds=viewer_seconds)
     except RuntimeError as e:
         print(f"viewer unavailable ({e}).\nOn macOS launch with: mjpython -m roborobust replay --episode {episode}\n"
               "or add --png out.png / --gif out.gif for headless output.")

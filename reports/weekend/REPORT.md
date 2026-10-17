@@ -343,7 +343,7 @@ Wall-clock as measured: the nominal and randomized run of each seed trained conc
 | main_test.jsonl sha256 | c9d62ee1aa400d1f833dbf2d42c5404ec4185b55b5d1afbc4c8c59fbd9f42e04 |
 | environment config + robot.xml hash | 3161eb646528c434-9370d167 |
 | source code hash (package .py/.xml) | 7dfb7cc80346bfa7 |
-| git commit | none (repository has no commit; the source code hash below identifies the code) |
+| git commit | none recorded at run time: these results were produced before the repository's first commit; the source code hash below identifies the code that produced them (DECISIONS.md, Provenance note) |
 | python / platform | 3.11.15 / macOS-26.6.2-arm64-arm-64bit |
 | package mujoco | 3.16.0 |
 | package gymnasium | 1.4.0 |

@@ -70,12 +70,28 @@ python scripts/publish_report.py weekend     # copies reports/weekend/REPORT.md 
 `comparison.png`, `learning_curves.png`, `failure_examples.png`, `paired_examples.png`, `failure_taxonomy.csv`, `episode_tags.csv`,
 `paired_bootstrap.csv`, `robustness_gap_did.csv`. Evaluation is deterministic: re-running it reproduces identical episode outcomes.
 
+## 4b. Demo assets
+
+```bash
+python scripts/make_demo_assets.py      # -> demo/ (built only from saved trajectories and reports; nothing is re-run)
+```
+
+## 4c. Follow-up experiment (not run; needs a fresh held-out set)
+
+`configs/motor_only.yaml` and `configs/noise_only.yaml` are the spec's stretch ablations (identical to `randomized.yaml` except one randomized factor).
+They are provided but **were not trained or evaluated**: because the primary result was null, a component-attribution experiment would be motivated by the test results, so the existing test split
+should be treated as development data and a *new* held-out set generated first (new `split_seed` in a copy of `configs/scenarios.yaml`, disjointness re-checked against train/val/test). Training them is the same command as above, e.g.
+
+```bash
+roborobust train --config configs/motor_only.yaml --seed 0 --steps 1000000 --run-id motor_only_s0
+```
+
 ## 5. Replaying a trajectory
 
 Saved trajectories hold the simulator integration state at every control boundary, so the viewer *restores* recorded frames (it does not re-simulate).
 
 ```bash
-mjpython -m roborobust replay --episode results/weekend/trajectories/<episode_id>.npz     # interactive viewer (macOS needs mjpython)
+mjpython -m roborobust replay --episode results/weekend/trajectories/<episode_id>.npz     # interactive viewer (macOS needs mjpython); add --viewer-seconds N to auto-close
 python  -m roborobust replay --episode results/weekend/trajectories/<episode_id>.npz --png path.png    # headless top-down plot
 python  -m roborobust replay --episode results/weekend/trajectories/<episode_id>.npz --gif path.gif    # headless offscreen render
 python  -m roborobust replay --episode results/weekend/trajectories/<episode_id>.npz --resimulate-check   # re-runs recorded actions, reports state divergence

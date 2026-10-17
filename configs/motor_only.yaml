@@ -1,0 +1,7 @@
+# STRETCH (not run for the reported results): motor randomization only. Identical to randomized.yaml except range noise is not randomized.
+# Evaluating the result on the existing test split would be a second, hypothesis-motivated look at it: generate a NEW held-out set first
+# (see REPRODUCE.md, "Follow-up experiment").
+base: randomized.yaml
+name: motor_only
+randomization:
+  range_noise_std_range: [0.0, 0.0]
