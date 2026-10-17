@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RoboRobust · Evidence explorer</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,sans-serif;background:#0d1420;color:#e6edf5}*{box-sizing:border-box}body{max-width:1200px;margin:auto;padding:40px 24px}h1{font-size:clamp(36px,6vw,64px);margin:12px 0}h2{font-size:22px}p{color:#b7c5d7;line-height:1.65}.eyebrow{color:#67dec8;letter-spacing:.16em;font-size:12px}section,.card{background:#151f30;border:1px solid #2c3c53;border-radius:16px;padding:24px;margin:20px 0}.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.controls{display:flex;flex-wrap:wrap;align-items:center;gap:16px}button,select{background:#22344e;color:#fff;border:1px solid #506884;border-radius:8px;padding:10px;font:inherit}button{cursor:pointer}input{accent-color:#67dec8}canvas{width:100%;height:auto;background:#0e1827;border-radius:12px}table{width:100%;border-collapse:collapse}td,th{text-align:left;padding:12px 6px;border-bottom:1px solid #304159}th{color:#a6b8ce;font-size:13px}.bar{background:#263a53;height:8px;border-radius:4px;margin-top:8px}.bar span{display:block;height:100%;background:#67dec8;border-radius:4px}.number{font-size:30px;font-weight:700}small,footer{color:#a6b8ce}code{overflow-wrap:anywhere}#timeline{flex:1;min-width:120px}button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #67dec8}@media(max-width:700px){.grid{grid-template-columns:1fr}body{padding:20px 12px}section{padding:16px}td,th{padding:10px 3px;font-size:13px}}
+</style>
+<header><span class="eyebrow">ROBOROBUST / SIMULATION RESEARCH</span><h1>Does randomization<br>make a safer robot?</h1><p>A differential-drive robot, two PPO training regimes, and a held-out robustness study.<br>Explore the evidence—including where the learned controllers fail.</p></header>
+<section><h2>01 / Compare the evidence</h2><div class="controls"><label>Evaluation condition <select id="condition"></select></label><label>Training seed <select id="seed"><option value="all">All seeds</option></select></label></div><p id="scope"></p><table><thead><tr><th>Controller</th><th>Safe arrival</th><th>Collision</th><th>Timeout</th></tr></thead><tbody id="metrics"></tbody></table><p id="finding"></p><small>Rates are descriptive. Seeds reuse the same layouts; pooled episodes are not independent trials. See REPORT.md for paired and hierarchical bootstrap intervals.</small></section>
+<section><h2>02 / Inspect a paired recorded episode</h2><p>Scenario index 0, training seed 0, selected independently of outcome. Recorded states and observations; playback does not run physics. A single episode cannot establish a performance advantage.</p><div class="controls"><button id="play" type="button">Play</button><button id="reset" type="button">Reset</button><label>Speed <select id="speed"><option value="1">1×</option><option value="2">2×</option><option value="4">4×</option></select></label><label><input id="sensors" type="checkbox"> Recorded range rays</label><label for="timeline">Time</label><input id="timeline" type="range" min="0" max="1" step="0.05" value="0"><output id="time"></output></div><div class="grid"><div><h3>PPO · Nominal training</h3><canvas id="nominal" width="500" height="500" role="img" aria-label="Nominal policy recorded robot position, obstacles and goal"></canvas><p id="nominal-status"></p></div><div><h3>PPO · Randomized training</h3><canvas id="randomized" width="500" height="500" role="img" aria-label="Randomized policy recorded robot position, obstacles and goal"></canvas><p id="randomized-status"></p></div></div><small>Green disc: stopping region. Pale rectangles: obstacles. Solid path: movement up to current time. Lines: noisy ranges received by the policy. Finished episodes stay at their final state.</small></section>
+<div class="grid"><section><h2>03 / Engineering that matters</h2><p>Wheel–ground contact drives motion in MuJoCo. A verifier independent of reward checks contact-free arrival and stopping. Frozen layouts, paired noise streams, five training seeds, checkpoint hashes, and raw traces make the comparison auditable.</p></section><section><h2>04 / The interview takeaway</h2><p>Domain randomization showed no detectable advantage at this budget. The reactive baseline performs better. The strongest engineering story is diagnosing reward-driven idling on validation, fixing the training protocol, and reporting a negative result honestly.</p></section></div>
+<footer><p>Simulation only · Privileged goal and velocity inputs · Feedforward policy · No hardware-transfer claim</p><p>Generated from saved evaluation records. No new test evaluation or training was performed.</p><small>Source episode_results.jsonl SHA-256: <code id="hash"></code></small></footer>
+<script id="evidence" type="application/json">__EVIDENCE__</script>
+<script>
+'use strict';
+const D=JSON.parse(document.getElementById('evidence').textContent), $=id=>document.getElementById(id);
+const names={nominal:'Nominal',within_support:'Within training support',weak_left:'Weak left motor',weak_right:'Weak right motor',noisy_sensing:'Noisy sensing',combined_stress:'Combined stress'};
+const labels={nominal:'PPO · Nominal',randomized:'PPO · Randomized',scripted:'Scripted reactive',random:'Random'};
+for(const c of [...new Set(D.episodes.map(r=>r.condition))]) $('condition').add(new Option(names[c]||c,c));
+for(const s of [...new Set(D.episodes.map(r=>r.training_seed).filter(s=>s!==null))].sort()) $('seed').add(new Option(String(s),String(s)));
+$('condition').value=[...$('condition').options].some(o=>o.value==='combined_stress')?'combined_stress':$('condition').value;
+$('hash').textContent=D.sha256;
+let playing=false,last=null,t=0;
+function stop(){playing=false;$('play').textContent='Play';last=null;}
+function selected(policy){return D.traces.find(r=>r.condition===$('condition').value&&r.policy===policy);}
+function update(){
+ stop();t=0;$('timeline').value=0;
+ const rows=D.episodes.filter(r=>r.condition===$('condition').value);
+ const policies=[...new Set(rows.map(r=>r.policy))];
+ $('metrics').replaceChildren();
+ for(const p of policies){
+  const r=rows.filter(r=>r.policy===p&&($('seed').value==='all'||r.training_seed===null||String(r.training_seed)===$('seed').value));
+  if(!r.length)continue;
+  const rate=key=>100*r.filter(key).length/r.length;
+  const tr=document.createElement('tr');
+  [labels[p]||p,rate(x=>x.success).toFixed(1)+'%',rate(x=>x.terminal_reason==='collision').toFixed(1)+'%',rate(x=>x.terminal_reason==='timeout').toFixed(1)+'%'].forEach(v=>{const td=document.createElement('td');td.textContent=v;tr.append(td);});
+  const bar=document.createElement('div');bar.className='bar';const fill=document.createElement('span');fill.style.width=rate(x=>x.success)+'%';bar.append(fill);tr.children[1].append(bar);$('metrics').append(tr);
+ }
+ $('scope').textContent=`${new Set(rows.map(r=>r.training_seed).filter(s=>s!==null)).size} training seeds available · ${rows.length} episode records in this condition. Baselines have no training seed.`;
+ $('finding').textContent='Primary endpoint (combined stress, all seeds): randomized − nominal = +0.4 percentage points. 95% interval: [−5.2, +6.0] pp over scenarios; [−10.0, +11.2] pp including seed resampling. These published intervals apply only to the complete primary analysis.';
+ $('timeline').max=Math.max(0,...['nominal','randomized'].map(p=>{const r=selected(p);return r?r.time.at(-1):0;}));draw();
+}
+function drawOne(policy){
+ const cv=$(policy),c=cv.getContext('2d'),r=selected(policy);c.clearRect(0,0,500,500);
+ if(!r){c.fillStyle='#e6edf5';c.font='18px system-ui';c.fillText('No pinned trajectory available',30,250);$(policy+'-status').textContent='Recorded trace unavailable';return;}
+ const x=v=>250+v*72,y=v=>250-v*72;
+ c.strokeStyle='#526782';c.lineWidth=2;c.strokeRect(x(-3),y(3),432,432);
+ for(const o of r.scenario.obstacles){c.fillStyle='#76869c';c.fillRect(x(o.cx-o.hx),y(o.cy+o.hy),o.hx*144,o.hy*144);}
+ const goal=r.scenario.goal;c.fillStyle='#286857';c.beginPath();c.arc(x(goal.x),y(goal.y),21.6,0,2*Math.PI);c.fill();
+ let i=0;while(i<r.time.length-1&&r.time[i+1]<=t)i++;
+ const pos=r.xy[i],a=r.yaw[i],color=policy==='nominal'?'#79b6ff':'#67dec8';
+ if($('sensors').checked){c.strokeStyle='#b0c4d755';c.lineWidth=1;for(let j=0;j<24;j++){const angle=a+j*Math.PI/12,range=r.rays[i][j];c.beginPath();c.moveTo(x(pos[0]),y(pos[1]));c.lineTo(x(pos[0]+Math.cos(angle)*range),y(pos[1]+Math.sin(angle)*range));c.stroke();}}
+ c.strokeStyle=color;c.lineWidth=3;c.beginPath();for(let j=0;j<=i;j++){const pt=r.xy[j];j?c.lineTo(x(pt[0]),y(pt[1])):c.moveTo(x(pt[0]),y(pt[1]));}c.stroke();
+ c.fillStyle=color;c.beginPath();c.arc(x(pos[0]),y(pos[1]),13,0,2*Math.PI);c.fill();c.strokeStyle='#0d1420';c.beginPath();c.moveTo(x(pos[0]),y(pos[1]));c.lineTo(x(pos[0]+.26*Math.cos(a)),y(pos[1]+.26*Math.sin(a)));c.stroke();
+ $(policy+'-status').textContent=`${i===r.time.length-1?r.reason.toUpperCase():'In progress'} · ${r.time[i].toFixed(2)} / ${r.time.at(-1).toFixed(2)} s · scenario 0, seed 0`;
+}
+function draw(){drawOne('nominal');drawOne('randomized');$('time').textContent=t.toFixed(2)+' s';}
+function frame(now){if(!playing)return;if(last!==null)t=Math.min(Number($('timeline').max),t+(now-last)/1000*Number($('speed').value));last=now;$('timeline').value=t;draw();if(t>=Number($('timeline').max)){stop();return;}requestAnimationFrame(frame);}
+$('play').onclick=()=>{if(playing){stop();return;}if(t>=Number($('timeline').max))t=0;playing=true;$('play').textContent='Pause';requestAnimationFrame(frame);};
+$('reset').onclick=()=>{stop();t=0;$('timeline').value=0;draw();};
+$('timeline').oninput=()=>{stop();t=Number($('timeline').value);draw();};$('sensors').onchange=draw;$('condition').onchange=update;$('seed').onchange=update;update();
+</script></html>

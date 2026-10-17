@@ -160,9 +160,21 @@ def _replay(args) -> int:
     return 0
 
 
+def _showcase(args) -> int:
+    from roborobust.showcase import build_showcase
+
+    print(build_showcase(args.input, args.output).resolve())
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="roborobust", description=__doc__)
     sub = p.add_subparsers(dest="cmd", required=True)
+
+    s = sub.add_parser("showcase", help="build a portable offline evidence explorer from saved results")
+    s.add_argument("--input", default="results/weekend")
+    s.add_argument("--output", default="demo/showcase.html")
+    s.set_defaults(fn=_showcase)
 
     s = sub.add_parser("doctor", help="check Python/arch, imports, MuJoCo stepping, optional renderer")
     s.set_defaults(fn=_doctor)

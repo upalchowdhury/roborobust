@@ -30,7 +30,7 @@ roborobust = "roborobust.cli:main"
 where = ["src"]
 
 [tool.setuptools.package-data]
-roborobust = ["robot.xml"]
+roborobust = ["robot.xml", "showcase.html"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

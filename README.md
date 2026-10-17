@@ -9,6 +9,16 @@ actuator and sensor shifts.
 Results are in [REPORT.md](REPORT.md); the tuning history, including the failures, is in [docs/dev_log.md](docs/dev_log.md);
 every deviation from the spec is in [DECISIONS.md](DECISIONS.md).
 
+## Interview demo
+
+```bash
+source .venv/bin/activate
+python -m roborobust showcase
+open demo/showcase.html
+```
+
+The **[offline evidence explorer](demo/showcase.html)** includes condition/seed comparisons, synchronized paired recordings, a scrubber, and recorded sensor rays. It runs without a server or network and rebuilds from existing results without evaluating the test set again. See **[INTERVIEW.md](INTERVIEW.md)** for the pitch, technical questions, failure investigation, and resume wording.
+
 ## Setup (macOS, Apple silicon, Python 3.11, CPU only)
 
 ```bash
